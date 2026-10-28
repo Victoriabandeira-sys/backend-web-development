@@ -1,0 +1,42 @@
+//Configuração do gerador do Prima Client
+gerador client {
+    provider = "prisma-client-js"
+}
+
+//Configuração da fonte de dados (utilizando o SQLite para simplificar)
+detasource db {
+    provider = "sqlite"
+    url = env("DATABASE_URL")
+}
+
+//Tabela de Usuários 
+model User {
+    id Int @id @default(autoincrement())
+    nome String
+    usuario String @unique
+    senha String
+    foto String?
+    postagens Postagens[]
+}
+
+//Tabela de Temas
+model Tema {
+    id Int @id @default(autoincrement())
+    descricao String
+    postagens Postagens[]
+}
+
+//Tabela de Postagens
+model Postagens {
+    id Int @id @default(autoincrement())
+    titulo String
+    Texto String
+    data DataTime @default(now())
+
+//Chaves estrangeiras e relacionamentos
+usuarioID Int?
+usuario User? @relation(fields: [usuarioId], references: [Id], onDelete: Cascade)
+
+temaId Int?
+tema Tema?  @relation(fields: [temaId], references: [Id], onDelete: Cascade)
+}
